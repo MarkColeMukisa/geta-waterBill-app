@@ -56,7 +56,7 @@ $(document).ready(function() {
             '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
 
         const notification = $(`
-            <div class="fixed top-4 right-4 z-50 max-w-sm w-full bg-white rounded-lg shadow-lg border-l-4 ${type === 'success' ? 'border-green-500' : 'border-red-500'} p-4 transform translate-x-full transition-transform duration-300">
+            <div class="fixed bottom-8 right-4 z-50 max-w-sm w-full bg-white rounded-lg shadow-lg border-l-4 ${type === 'success' ? 'border-green-500' : 'border-red-500'} p-4 transform translate-x-full transition-transform duration-300">
                 <div class="flex items-start">
                     <div class="flex-shrink-0">
                         <div class="w-8 h-8 rounded-full ${type === 'success' ? 'bg-green-100' : 'bg-red-100'} flex items-center justify-center">
@@ -308,4 +308,14 @@ $(document).ready(function() {
     setTimeout(() => {
         showNotification('Welcome to GETA Water Bill Management System! 🚰', 'success');
     }, 1000);
+
+    // Admin Username 
+    $('#adminLoginButton').click( function(){
+        let loginUsername = $('#loginUsername').val();
+
+        //save username to localStorage
+        localStorage.setItem('manageUsername', loginUsername);
+
+        //redirect to ds
+    });
 });

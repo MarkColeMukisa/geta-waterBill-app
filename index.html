@@ -216,7 +216,7 @@
 
 <body class="font-sans text-gray-800 bg-light min-h-screen">
   <!-- Header Section -->
-  <header class="bg-gradient-to-r from-secondary to-dark text-white py-6 relative overflow-hidden">
+  <header class="bg-gradient-to-r from-secondary to-dark text-white py-6 relative overflow-hidden sticky top-0 z-50">
     <!-- Background decorative elements -->
     <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
     <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"></div>
@@ -227,7 +227,7 @@
         <!-- Logo and Title -->
         <div class="flex items-center space-x-4">
           <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
             </svg>
           </div>
@@ -255,6 +255,15 @@
               </svg>
             </div>
             <span class="text-sm">info@geta.com</span>
+          </div>
+          <!-- Login  -->
+          <div class="flex items-center space-x-2">
+            <a href="/dashboard.html" id="loginBtn" class="ml-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-flex items-center group animate-in">
+              Login
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -452,23 +461,39 @@
           <span class="text-xl font-bold">GETA</span>
         </div>
         <p class="text-gray-300 mb-4">Professional Water Bill Management System</p>
-        <div class="flex justify-center space-x-6">
-          <a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
-            </svg>
-          </a>
-          <a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-            </svg>
-          </a>
-          <a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
-            </svg>
-          </a>
-        </div>
+        <!-- Social Media Links -->
+            <div class="flex flex-wrap justify-center gap-4">
+              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#1877F2] group-hover:text-[#0d6efd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              </a>
+              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#1DA1F2] group-hover:text-[#0c85d0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                </svg>
+              </a>
+              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#0A66C2] group-hover:text-[#084e96]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect width="4" height="12" x="2" y="9"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              </a>
+              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#E4405F] group-hover:text-[#d62e50]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                </svg>
+              </a>
+              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#FF0000] group-hover:text-[#cc0000]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                </svg>
+              </a>
+            </div>
         <div class="border-t border-gray-700 mt-6 pt-6">
           <p class="text-gray-400 text-sm">
             © 2025 GETA Water Bill Management System. All Rights Reserved.
@@ -481,5 +506,86 @@
   <!-- jQuery & Script -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="main.js"></script>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm relative">
+      <button id="closeModal" class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl">&times;</button>
+      <h2 class="text-2xl font-bold text-secondary mb-6 text-center">Manager Login</h2>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-gray-700 mb-1">Username</label>
+          <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required />
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1">Password</label>
+          <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required />
+        </div>
+        <button type="submit" id="adminLoginBtn" class="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition">Login</button>
+      </form>
+      <div id="loginError" class="text-red-500 text-sm mt-2 hidden text-center">Invalid credentials.</div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var loginBtn = document.getElementById('loginBtn');
+    var loginModal = document.getElementById('loginModal');
+    var closeModal = document.getElementById('closeModal');
+    var loginForm = document.getElementById('loginForm');
+    var loginError = document.getElementById('loginError');
+    var dashboardLink = document.getElementById('dashboardLink');
+    var authNav = document.getElementById('authNav');
+
+    // Show modal
+    if (loginBtn) {
+      loginBtn.addEventListener('click', function() {
+        loginModal.classList.remove('hidden');
+        loginError.classList.add('hidden');
+      });
+    }
+    // Hide modal
+    if (closeModal) {
+      closeModal.addEventListener('click', function() {
+        loginModal.classList.add('hidden');
+      });
+    }
+    // Hide modal on outside click
+    if (loginModal) {
+      loginModal.addEventListener('click', function(e) {
+        if (e.target === loginModal) loginModal.classList.add('hidden');
+      });
+    }
+    // Demo login logic
+    if (loginForm) {
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var username = document.getElementById('loginUsername').value.trim();
+        var password = document.getElementById('loginPassword').value.trim();
+        if (username && password) {
+          // Simulate login success
+          localStorage.setItem('geta_manager_logged_in', '1');
+          localStorage.setItem('managerUsername', username);
+          loginModal.classList.add('hidden');
+          if (loginBtn) loginBtn.classList.add('hidden');
+          if (dashboardLink) dashboardLink.classList.remove('hidden');
+          window.location.href = 'dashboard.html';
+        } else {
+          loginError.classList.remove('hidden');
+        }
+      });
+    }
+    // On page load, show dashboard link if logged in
+    if (loginBtn && dashboardLink) {
+      if (localStorage.getItem('geta_manager_logged_in') === '1') {
+        loginBtn.classList.add('hidden');
+        dashboardLink.classList.remove('hidden');
+      } else {
+        loginBtn.classList.remove('hidden');
+        dashboardLink.classList.add('hidden');
+      }
+    }
+  });
+  </script>
 </body>
 </html>

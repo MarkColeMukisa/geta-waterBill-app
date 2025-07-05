@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manager Dashboard | GETA Water Bill</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#FF4500",
+            secondary: "#181d38",
+            accent: "#00D9DA",
+            dark: "#0F1225",
+            light: "#F8F9FC",
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-light min-h-screen font-sans">
+  <nav class="bg-white shadow-md mb-8">
+    <div class="container mx-auto px-4 flex justify-between items-center h-20">
+      <div class="flex items-center space-x-3">
+        <div class="w-14 h-14 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <span class="text-xl font-bold text-gray-800">GETA Dashboard</span>
+      </div>
+      <button id="logoutBtn" class="bg-primary text-white px-4 py-2 rounded-full hover:bg-primary/90 transition duration-300 shadow-md">Logout</button>
+    </div>
+  </nav>
+  <main class="container mx-auto px-4">
+    <div class="bg-white rounded-2xl shadow-xl p-8 max-w-2xl mx-auto mt-12">
+      <h1 class="dashboard-welcome text-3xl font-bold text-secondary mb-4">Welcome, Manager!</h1>
+      <p class="text-gray-700 mb-6">This is your dashboard. Here you will be able to view stats, manage bills, and access management features (coming soon).</p>
+      <div class="border-t pt-6 text-gray-400 text-sm">Dashboard features coming soon...</div>
+    </div>
+  </main>
+
+  <!-- jQuery & Script -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function() {
+      // Redirect to login if not authenticated
+      if (localStorage.getItem('geta_manager_logged_in') !== '1') {
+        window.location.href = 'index.html';
+        return;
+      }
+      // Set username in welcome message
+      const username = localStorage.getItem('managerUsername');
+      const displayName = username ? username : 'Manager';
+      $('.dashboard-welcome').html(`Welcome, ${displayName}!`);
+      // Logout logic
+      $('#logoutBtn').on('click', function() {
+        localStorage.removeItem('geta_manager_logged_in');
+        localStorage.removeItem('managerUsername');
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+  <script src="main.js"></script>
+</body>
+</html> 
