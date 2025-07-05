@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geta - Water Bill Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#FF4500", // orangered
+            secondary: "#181d38", // dark blue
+            accent: "#00D9DA", // teal accent
+            dark: "#0F1225",
+            light: "#F8F9FC",
+          },
+          fontFamily: {
+            sans: ["Outfit", "sans-serif"],
+            heading: ["Poppins", "sans-serif"],
+          },
+          animation: {
+            float: "float 3s ease-in-out infinite",
+            "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+          },
+          keyframes: {
+            float: {
+              "0%, 100%": { transform: "translateY(0)" },
+              "50%": { transform: "translateY(-10px)" },
+            },
+          },
+          backgroundImage: {
+            "hero-pattern":
+              'url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap");
+
+    .hero-pattern {
+      background-color: #1970bd;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .scroll-smooth {
+      scroll-behavior: smooth;
+    }
+
+    /* Animations for content sections */
+    .reveal {
+      position: relative;
+      opacity: 0;
+      transition: all 0.8s ease-in-out;
+    }
+
+    .reveal.active {
+      opacity: 1;
+    }
+
+    .reveal.fade-bottom {
+      transform: translateY(50px);
+    }
+
+    .reveal.fade-bottom.active {
+      transform: translateY(0);
+    }
+
+    .reveal.fade-left {
+      transform: translateX(-50px);
+    }
+
+    .reveal.fade-left.active {
+      transform: translateX(0);
+    }
+
+    .reveal.fade-right {
+      transform: translateX(50px);
+    }
+
+    .reveal.fade-right.active {
+      transform: translateX(0);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff4500;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d93700;
+    }
+
+    /* Animations */
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .service-card {
+      transition: all 0.5s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-10px);
+    }
+    .service-card:hover .icon-container {
+      transform: scale(1.1) rotate(5deg);
+    }
+    .service-card:hover .service-details {
+      max-height: 300px;
+      opacity: 1;
+    }
+    .service-details {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+    .icon-container {
+      transition: all 0.3s ease;
+    }
+    .glow {
+      box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+    }
+    .glow:hover {
+      box-shadow: 0 0 30px rgba(255, 69, 0, 0.7);
+    }
+
+    /* Form styling */
+    .form-input {
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 69, 0, 0.15);
+    }
+
+    /* Button animations */
+    .btn-primary {
+      background: linear-gradient(135deg, #FF4500, #FF6347);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    /* Table styling */
+    .table-container {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .table-header {
+      background: linear-gradient(135deg, #FF4500, #FF6347);
+      color: white;
+    }
+
+    .table-row:hover {
+      background: rgba(255, 69, 0, 0.05);
+      transform: scale(1.01);
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-gray-800 bg-light min-h-screen">
+  <!-- Header Section -->
+  <header class="bg-gradient-to-r from-secondary to-dark text-white py-6 relative overflow-hidden">
+    <!-- Background decorative elements -->
+    <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
+    <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-accent/10 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
+
+    <div class="container mx-auto px-4 md:px-8 relative z-10">
+      <div class="flex items-center justify-between">
+        <!-- Logo and Title -->
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold">GETA</h1>
+            <p class="text-white/80 text-sm">Water Bill Management System</p>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="hidden md:flex items-center space-x-6">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <span class="text-sm">Support: +256 XXX XXX XXX</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </div>
+            <span class="text-sm">info@geta.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-12 relative">
+    <!-- Background elements -->
+    <div class="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
+
+    <!-- Animated particles -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="particle bg-primary/20 w-2 h-2 rounded-full absolute top-[15%] left-[10%] animate-float" style="animation-delay: 0s; animation-duration: 15s"></div>
+      <div class="particle bg-accent/20 w-3 h-3 rounded-full absolute top-[25%] left-[85%] animate-float" style="animation-delay: 2s; animation-duration: 18s"></div>
+      <div class="particle bg-secondary/20 w-2 h-2 rounded-full absolute top-[65%] left-[8%] animate-float" style="animation-delay: 1s; animation-duration: 20s"></div>
+      <div class="particle bg-primary/20 w-4 h-4 rounded-full absolute top-[75%] left-[75%] animate-float" style="animation-delay: 3s; animation-duration: 25s"></div>
+    </div>
+
+    <div class="container mx-auto px-4 md:px-8 relative z-10">
+      <!-- Section header -->
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <div class="inline-flex items-center justify-center mb-6">
+          <span class="h-px w-8 bg-primary/50"></span>
+          <span class="mx-4 py-1.5 px-6 bg-primary/10 text-primary rounded-full text-sm font-medium backdrop-blur-sm">Water Bill Calculator</span>
+          <span class="h-px w-8 bg-primary/50"></span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-bold text-secondary mb-6 leading-tight">
+          Generate
+          <span class="relative inline-block">
+            <span class="relative z-10 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Water Bill</span>
+            <span class="absolute -bottom-1.5 left-0 w-full h-3 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-sm"></span>
+          </span>
+        </h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+          Calculate water bills for tenants with automatic VAT, PAYE, and rubbish collection charges.
+        </p>
+      </div>
+
+      <!-- Main Form Card -->
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden relative group">
+          <!-- Decorative elements -->
+          <div class="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full"></div>
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/10 rounded-full"></div>
+
+          <div class="p-8 md:p-12 relative">
+            <!-- Form Header -->
+            <div class="text-center mb-8">
+              <div class="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-secondary mb-2">Tenant Bill Form</h3>
+              <p class="text-gray-600">Enter tenant details and meter readings to generate the bill</p>
+            </div>
+
+            <form id="formDetails" class="space-y-6">
+              <!-- Tenant Name -->
+              <div class="space-y-2">
+                <label for="tenantName" class="text-sm font-medium text-gray-700 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  Tenant Name
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="tenantName"
+                    placeholder="Enter tenant's full name"
+                    class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                  />
+                </div>
+              </div>
+
+              <!-- Previous Meter Reading -->
+              <div class="space-y-2">
+                <label for="pmReading" class="text-sm font-medium text-gray-700 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  Previous Meter Reading
+                </label>
+                <div class="relative">
+                  <input
+                    type="number"
+                    id="pmReading"
+                    placeholder="Enter previous meter reading"
+                    class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                  />
+                </div>
+              </div>
+
+              <!-- Current Meter Reading -->
+              <div class="space-y-2">
+                <label for="cmReading" class="text-sm font-medium text-gray-700 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  Current Meter Reading
+                </label>
+                <div class="relative">
+                  <input
+                    type="number"
+                    id="cmReading"
+                    placeholder="Enter current meter reading"
+                    class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                  />
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                <button
+                  id="generateBill"
+                  type="button"
+                  class="btn-primary text-white px-8 py-3 rounded-xl font-semibold flex-1 flex items-center justify-center group"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  Generate Bill
+                </button>
+                <button
+                  id="resetButton"
+                  type="button"
+                  class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center group"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-180 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                    <path d="M21 3v5h-5"></path>
+                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                    <path d="M3 21v-5h5"></path>
+                  </svg>
+                  Reset Form
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bill Report Table -->
+        <div id="tableReport" class="mt-12 hidden">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold text-secondary mb-2">Bill Report</h3>
+            <p class="text-gray-600">Generated water bill details for the tenant</p>
+          </div>
+          
+          <div class="table-container">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="table-header">
+                  <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Tenant Name</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Prev Reading</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Current Reading</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Units</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Unit Cost (shs. 3516)</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Rubbish (shs. 5000)</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Total Bill</th>
+                  </tr>
+                </thead>
+                <tbody id="billReport" class="text-gray-700">
+                  <!-- Table rows will be dynamically added here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-secondary text-white py-8 mt-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
+    <div class="container mx-auto px-4 md:px-8 relative z-10">
+      <div class="text-center">
+        <div class="flex items-center justify-center space-x-2 mb-4">
+          <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold">GETA</span>
+        </div>
+        <p class="text-gray-300 mb-4">Professional Water Bill Management System</p>
+        <div class="flex justify-center space-x-6">
+          <a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+            </svg>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+            </svg>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-primary transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+            </svg>
+          </a>
+        </div>
+        <div class="border-t border-gray-700 mt-6 pt-6">
+          <p class="text-gray-400 text-sm">
+            © 2025 GETA Water Bill Management System. All Rights Reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- jQuery & Script -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
