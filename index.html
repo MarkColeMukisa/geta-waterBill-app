@@ -1,591 +1,918 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Geta - Water Bill Management System</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: "#FF4500", // orangered
-            secondary: "#181d38", // dark blue
-            accent: "#00D9DA", // teal accent
-            dark: "#0F1225",
-            light: "#F8F9FC",
-          },
-          fontFamily: {
-            sans: ["Outfit", "sans-serif"],
-            heading: ["Poppins", "sans-serif"],
-          },
-          animation: {
-            float: "float 3s ease-in-out infinite",
-            "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-          },
-          keyframes: {
-            float: {
-              "0%, 100%": { transform: "translateY(0)" },
-              "50%": { transform: "translateY(-10px)" },
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geta - Water Bill Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#FF4500", // orangered
+              secondary: "#181d38", // dark blue
+              accent: "#00D9DA", // teal accent
+              dark: "#0F1225",
+              light: "#F8F9FC",
+            },
+            fontFamily: {
+              sans: ["Outfit", "sans-serif"],
+              heading: ["Poppins", "sans-serif"],
+            },
+            animation: {
+              float: "float 3s ease-in-out infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+            },
+            backgroundImage: {
+              "hero-pattern":
+                'url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')',
             },
           },
-          backgroundImage: {
-            "hero-pattern":
-              'url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')',
-          },
         },
-      },
-    };
-  </script>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap");
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap");
 
-    .hero-pattern {
-      background-color: #1970bd;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0px);
+      .hero-pattern {
+        background-color: #1970bd;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       }
-      50% {
-        transform: translateY(-20px);
+
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
       }
-      100% {
-        transform: translateY(0px);
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
       }
-    }
 
-    .scroll-smooth {
-      scroll-behavior: smooth;
-    }
+      .scroll-smooth {
+        scroll-behavior: smooth;
+      }
 
-    /* Animations for content sections */
-    .reveal {
-      position: relative;
-      opacity: 0;
-      transition: all 0.8s ease-in-out;
-    }
+      /* Animations for content sections */
+      .reveal {
+        position: relative;
+        opacity: 0;
+        transition: all 0.8s ease-in-out;
+      }
 
-    .reveal.active {
-      opacity: 1;
-    }
+      .reveal.active {
+        opacity: 1;
+      }
 
-    .reveal.fade-bottom {
-      transform: translateY(50px);
-    }
+      .reveal.fade-bottom {
+        transform: translateY(50px);
+      }
 
-    .reveal.fade-bottom.active {
-      transform: translateY(0);
-    }
-
-    .reveal.fade-left {
-      transform: translateX(-50px);
-    }
-
-    .reveal.fade-left.active {
-      transform: translateX(0);
-    }
-
-    .reveal.fade-right {
-      transform: translateX(50px);
-    }
-
-    .reveal.fade-right.active {
-      transform: translateX(0);
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #ff4500;
-      border-radius: 5px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #d93700;
-    }
-
-    /* Animations */
-    .animate-float {
-      animation: float 3s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%,
-      100% {
+      .reveal.fade-bottom.active {
         transform: translateY(0);
       }
-      50% {
+
+      .reveal.fade-left {
+        transform: translateX(-50px);
+      }
+
+      .reveal.fade-left.active {
+        transform: translateX(0);
+      }
+
+      .reveal.fade-right {
+        transform: translateX(50px);
+      }
+
+      .reveal.fade-right.active {
+        transform: translateX(0);
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ff4500;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #d93700;
+      }
+
+      /* Animations */
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .service-card {
+        transition: all 0.5s ease;
+      }
+      .service-card:hover {
         transform: translateY(-10px);
       }
-    }
+      .service-card:hover .icon-container {
+        transform: scale(1.1) rotate(5deg);
+      }
+      .service-card:hover .service-details {
+        max-height: 300px;
+        opacity: 1;
+      }
+      .service-details {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.5s ease;
+      }
+      .icon-container {
+        transition: all 0.3s ease;
+      }
+      .glow {
+        box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+      }
+      .glow:hover {
+        box-shadow: 0 0 30px rgba(255, 69, 0, 0.7);
+      }
 
-    .service-card {
-      transition: all 0.5s ease;
-    }
-    .service-card:hover {
-      transform: translateY(-10px);
-    }
-    .service-card:hover .icon-container {
-      transform: scale(1.1) rotate(5deg);
-    }
-    .service-card:hover .service-details {
-      max-height: 300px;
-      opacity: 1;
-    }
-    .service-details {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: all 0.5s ease;
-    }
-    .icon-container {
-      transition: all 0.3s ease;
-    }
-    .glow {
-      box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
-    }
-    .glow:hover {
-      box-shadow: 0 0 30px rgba(255, 69, 0, 0.7);
-    }
+      /* Form styling */
+      .form-input {
+        transition: all 0.3s ease;
+      }
+      .form-input:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 69, 0, 0.15);
+      }
 
-    /* Form styling */
-    .form-input {
-      transition: all 0.3s ease;
-    }
-    .form-input:focus {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(255, 69, 0, 0.15);
-    }
+      /* Button animations */
+      .btn-primary {
+        background: linear-gradient(135deg, #ff4500, #ff6347);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+      }
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+      .btn-primary:hover::before {
+        left: 100%;
+      }
 
-    /* Button animations */
-    .btn-primary {
-      background: linear-gradient(135deg, #FF4500, #FF6347);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
-    }
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-    .btn-primary:hover::before {
-      left: 100%;
-    }
+      /* Table styling */
+      .table-container {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+        border-radius: 1rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
 
-    /* Table styling */
-    .table-container {
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
-      border-radius: 1rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-    }
+      .table-header {
+        background: linear-gradient(135deg, #ff4500, #ff6347);
+        color: white;
+      }
 
-    .table-header {
-      background: linear-gradient(135deg, #FF4500, #FF6347);
-      color: white;
-    }
+      .table-row:hover {
+        background: rgba(255, 69, 0, 0.05);
+        transform: scale(1.01);
+        transition: all 0.3s ease;
+      }
+    </style>
+  </head>
 
-    .table-row:hover {
-      background: rgba(255, 69, 0, 0.05);
-      transform: scale(1.01);
-      transition: all 0.3s ease;
-    }
-  </style>
-</head>
+  <body class="font-sans text-gray-800 bg-light min-h-screen">
+    <!-- Header Section -->
+    <header
+      class="bg-gradient-to-r from-secondary to-dark text-white py-6 relative overflow-hidden sticky top-0 z-50"
+    >
+      <!-- Background decorative elements -->
+      <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
+      <div
+        class="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-accent/10 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"
+      ></div>
 
-<body class="font-sans text-gray-800 bg-light min-h-screen">
-  <!-- Header Section -->
-  <header class="bg-gradient-to-r from-secondary to-dark text-white py-6 relative overflow-hidden sticky top-0 z-50">
-    <!-- Background decorative elements -->
-    <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
-    <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-accent/10 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
-
-    <div class="container mx-auto px-4 md:px-8 relative z-10">
-      <div class="flex items-center justify-between">
-        <!-- Logo and Title -->
-        <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-            </svg>
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div class="flex items-center justify-between">
+          <!-- Logo and Title -->
+          <div class="flex items-center space-x-4">
+            <div
+              class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-primary"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h1 class="text-2xl md:text-3xl font-bold">GETA</h1>
+              <p class="text-white/80 text-sm">Water Bill Management System</p>
+            </div>
           </div>
-          <div>
-            <h1 class="text-2xl md:text-3xl font-bold">GETA</h1>
-            <p class="text-white/80 text-sm">Water Bill Management System</p>
+
+          <!-- Contact Info -->
+          <div class="hidden md:flex items-center space-x-6">
+            <div class="flex items-center space-x-2">
+              <div
+                class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                  ></path>
+                </svg>
+              </div>
+              <span class="text-sm">Support: +256 XXX XXX XXX</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <div
+                class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </div>
+              <span class="text-sm">info@geta.com</span>
+            </div>
+            <!-- Login  -->
+            <div class="flex items-center space-x-2">
+              <a
+                id="loginBtn"
+                class="ml-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-flex items-center group animate-in"
+              >
+                Login
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+            <!-- Logout dropdown or link -->
+            <div id="logoutOption" class="mt-2 hidden">
+              <button
+                id="logoutBtn"
+                class="ml-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-flex items-center group animate-in"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
+      </div>
+    </header>
 
-        <!-- Contact Info -->
-        <div class="hidden md:flex items-center space-x-6">
-          <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    <!-- Main Content -->
+    <main class="py-12 relative">
+      <!-- Background elements -->
+      <div
+        class="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"
+      ></div>
+      <div
+        class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"
+      ></div>
+
+      <!-- Animated particles -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          class="particle bg-primary/20 w-2 h-2 rounded-full absolute top-[15%] left-[10%] animate-float"
+          style="animation-delay: 0s; animation-duration: 15s"
+        ></div>
+        <div
+          class="particle bg-accent/20 w-3 h-3 rounded-full absolute top-[25%] left-[85%] animate-float"
+          style="animation-delay: 2s; animation-duration: 18s"
+        ></div>
+        <div
+          class="particle bg-secondary/20 w-2 h-2 rounded-full absolute top-[65%] left-[8%] animate-float"
+          style="animation-delay: 1s; animation-duration: 20s"
+        ></div>
+        <div
+          class="particle bg-primary/20 w-4 h-4 rounded-full absolute top-[75%] left-[75%] animate-float"
+          style="animation-delay: 3s; animation-duration: 25s"
+        ></div>
+      </div>
+
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <!-- Section header -->
+        <div class="text-center mb-12 max-w-3xl mx-auto">
+          <div class="inline-flex items-center justify-center mb-6">
+            <span class="h-px w-8 bg-primary/50"></span>
+            <span
+              class="mx-4 py-1.5 px-6 bg-primary/10 text-primary rounded-full text-sm font-medium backdrop-blur-sm"
+              >Water Bill Calculator</span
+            >
+            <span class="h-px w-8 bg-primary/50"></span>
+          </div>
+          <h2
+            class="text-4xl md:text-5xl font-bold text-secondary mb-6 leading-tight"
+          >
+            Generate
+            <span class="relative inline-block">
+              <span
+                class="relative z-10 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                >Water Bill</span
+              >
+              <span
+                class="absolute -bottom-1.5 left-0 w-full h-3 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-sm"
+              ></span>
+            </span>
+          </h2>
+          <p class="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            Calculate water bills for tenants with automatic VAT, PAYE, and
+            rubbish collection charges.
+          </p>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="max-w-4xl mx-auto">
+          <div
+            class="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden relative group"
+          >
+            <!-- Decorative elements -->
+            <div
+              class="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full"
+            ></div>
+            <div
+              class="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/10 rounded-full"
+            ></div>
+
+            <div class="p-8 md:p-12 relative">
+              <!-- Form Header -->
+              <div class="text-center mb-8">
+                <div
+                  class="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center mx-auto mb-4"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8 text-white"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-secondary mb-2">
+                  Tenant Bill Form
+                </h3>
+                <p class="text-gray-600">
+                  Enter tenant details and meter readings to generate the bill
+                </p>
+              </div>
+
+              <form id="formDetails" class="space-y-6">
+                <!-- Tenant Name -->
+                <div class="space-y-2">
+                  <label
+                    for="tenantName"
+                    class="text-sm font-medium text-gray-700 flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-2 text-primary"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+                      ></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Tenant Name
+                  </label>
+                  <div class="relative">
+                    <input
+                      type="text"
+                      id="tenantName"
+                      placeholder="Enter tenant's full name"
+                      class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                    />
+                  </div>
+                </div>
+
+                <!-- Previous Meter Reading -->
+                <div class="space-y-2">
+                  <label
+                    for="pmReading"
+                    class="text-sm font-medium text-gray-700 flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-2 text-primary"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Previous Meter Reading
+                  </label>
+                  <div class="relative">
+                    <input
+                      type="number"
+                      id="pmReading"
+                      placeholder="Enter previous meter reading"
+                      class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                    />
+                  </div>
+                </div>
+
+                <!-- Current Meter Reading -->
+                <div class="space-y-2">
+                  <label
+                    for="cmReading"
+                    class="text-sm font-medium text-gray-700 flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 mr-2 text-primary"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                      ></path>
+                    </svg>
+                    Current Meter Reading
+                  </label>
+                  <div class="relative">
+                    <input
+                      type="number"
+                      id="cmReading"
+                      placeholder="Enter current meter reading"
+                      class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                    />
+                  </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                  <button
+                    id="generateBill"
+                    type="button"
+                    class="btn-primary text-white px-8 py-3 rounded-xl font-semibold flex-1 flex items-center justify-center group"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="16" y1="13" x2="8" y2="13"></line>
+                      <line x1="16" y1="17" x2="8" y2="17"></line>
+                      <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    Generate Bill
+                  </button>
+                  <button
+                    id="resetButton"
+                    type="button"
+                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center group"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2 group-hover:rotate-180 transition-transform duration-300"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                      ></path>
+                      <path d="M21 3v5h-5"></path>
+                      <path
+                        d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                      ></path>
+                      <path d="M3 21v-5h5"></path>
+                    </svg>
+                    Reset Form
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Bill Report Table -->
+          <div id="tableReport" class="mt-12 hidden">
+            <div class="text-center mb-8">
+              <h3 class="text-2xl font-bold text-secondary mb-2">
+                Bill Report
+              </h3>
+              <p class="text-gray-600">
+                Generated water bill details for the tenant
+              </p>
+            </div>
+
+            <div class="table-container">
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="table-header">
+                    <tr>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Tenant Name
+                      </th>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Prev Reading
+                      </th>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Current Reading
+                      </th>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Units
+                      </th>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Unit Cost (shs. 3516)
+                      </th>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Rubbish (shs. 5000)
+                      </th>
+                      <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Total Bill
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="billReport" class="text-gray-700">
+                    <!-- Table rows will be dynamically added here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-8 mt-20 relative overflow-hidden">
+      <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
+      <div class="container mx-auto px-4 md:px-8 relative z-10">
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-2 mb-4">
+            <div
+              class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-primary"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                ></path>
               </svg>
             </div>
-            <span class="text-sm">Support: +256 XXX XXX XXX</span>
+            <span class="text-xl font-bold">GETA</span>
           </div>
-          <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          <p class="text-gray-300 mb-4">
+            Professional Water Bill Management System
+          </p>
+          <!-- Social Media Links -->
+          <div class="flex flex-wrap justify-center gap-4">
+            <a
+              href="#"
+              class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-[#1877F2] group-hover:text-[#0d6efd]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
               </svg>
-            </div>
-            <span class="text-sm">info@geta.com</span>
-          </div>
-          <!-- Login  -->
-          <div class="flex items-center space-x-2">
-            <a href="/dashboard.html" id="loginBtn" class="ml-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-flex items-center group animate-in">
-              Login
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </a>
+            <a
+              href="#"
+              class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-[#1DA1F2] group-hover:text-[#0c85d0]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                ></path>
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-[#0A66C2] group-hover:text-[#084e96]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                ></path>
+                <rect width="4" height="12" x="2" y="9"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-[#E4405F] group-hover:text-[#d62e50]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-[#FF0000] group-hover:text-[#cc0000]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"
+                ></path>
+                <polygon
+                  points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"
+                ></polygon>
               </svg>
             </a>
           </div>
+          <div class="border-t border-gray-700 mt-6 pt-6">
+            <p class="text-gray-400 text-sm">
+              © 2025 GETA Water Bill Management System. All Rights Reserved.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+    </footer>
 
-  <!-- Main Content -->
-  <main class="py-12 relative">
-    <!-- Background elements -->
-    <div class="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
-    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
+    <!-- jQuery & Script -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="main.js"></script>
 
-    <!-- Animated particles -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="particle bg-primary/20 w-2 h-2 rounded-full absolute top-[15%] left-[10%] animate-float" style="animation-delay: 0s; animation-duration: 15s"></div>
-      <div class="particle bg-accent/20 w-3 h-3 rounded-full absolute top-[25%] left-[85%] animate-float" style="animation-delay: 2s; animation-duration: 18s"></div>
-      <div class="particle bg-secondary/20 w-2 h-2 rounded-full absolute top-[65%] left-[8%] animate-float" style="animation-delay: 1s; animation-duration: 20s"></div>
-      <div class="particle bg-primary/20 w-4 h-4 rounded-full absolute top-[75%] left-[75%] animate-float" style="animation-delay: 3s; animation-duration: 25s"></div>
-    </div>
-
-    <div class="container mx-auto px-4 md:px-8 relative z-10">
-      <!-- Section header -->
-      <div class="text-center mb-12 max-w-3xl mx-auto">
-        <div class="inline-flex items-center justify-center mb-6">
-          <span class="h-px w-8 bg-primary/50"></span>
-          <span class="mx-4 py-1.5 px-6 bg-primary/10 text-primary rounded-full text-sm font-medium backdrop-blur-sm">Water Bill Calculator</span>
-          <span class="h-px w-8 bg-primary/50"></span>
-        </div>
-        <h2 class="text-4xl md:text-5xl font-bold text-secondary mb-6 leading-tight">
-          Generate
-          <span class="relative inline-block">
-            <span class="relative z-10 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Water Bill</span>
-            <span class="absolute -bottom-1.5 left-0 w-full h-3 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-sm"></span>
-          </span>
+    <!-- Login Modal -->
+    <div
+      id="loginModal"
+      class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm relative">
+        <button
+          id="closeModal"
+          class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl"
+        >
+          &times;
+        </button>
+        <h2 class="text-2xl font-bold text-secondary mb-6 text-center">
+          Manager Login
         </h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-          Calculate water bills for tenants with automatic VAT, PAYE, and rubbish collection charges.
-        </p>
-      </div>
-
-      <!-- Main Form Card -->
-      <div class="max-w-4xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden relative group">
-          <!-- Decorative elements -->
-          <div class="absolute -top-6 -right-6 w-24 h-24 bg-primary/10 rounded-full"></div>
-          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/10 rounded-full"></div>
-
-          <div class="p-8 md:p-12 relative">
-            <!-- Form Header -->
-            <div class="text-center mb-8">
-              <div class="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold text-secondary mb-2">Tenant Bill Form</h3>
-              <p class="text-gray-600">Enter tenant details and meter readings to generate the bill</p>
-            </div>
-
-            <form id="formDetails" class="space-y-6">
-              <!-- Tenant Name -->
-              <div class="space-y-2">
-                <label for="tenantName" class="text-sm font-medium text-gray-700 flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                  Tenant Name
-                </label>
-                <div class="relative">
-                  <input
-                    type="text"
-                    id="tenantName"
-                    placeholder="Enter tenant's full name"
-                    class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
-                  />
-                </div>
-              </div>
-
-              <!-- Previous Meter Reading -->
-              <div class="space-y-2">
-                <label for="pmReading" class="text-sm font-medium text-gray-700 flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  Previous Meter Reading
-                </label>
-                <div class="relative">
-                  <input
-                    type="number"
-                    id="pmReading"
-                    placeholder="Enter previous meter reading"
-                    class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
-                  />
-                </div>
-              </div>
-
-              <!-- Current Meter Reading -->
-              <div class="space-y-2">
-                <label for="cmReading" class="text-sm font-medium text-gray-700 flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                  </svg>
-                  Current Meter Reading
-                </label>
-                <div class="relative">
-                  <input
-                    type="number"
-                    id="cmReading"
-                    placeholder="Enter current meter reading"
-                    class="form-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
-                  />
-                </div>
-              </div>
-
-              <!-- Buttons -->
-              <div class="flex flex-col sm:flex-row gap-4 pt-6">
-                <button
-                  id="generateBill"
-                  type="button"
-                  class="btn-primary text-white px-8 py-3 rounded-xl font-semibold flex-1 flex items-center justify-center group"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                  </svg>
-                  Generate Bill
-                </button>
-                <button
-                  id="resetButton"
-                  type="button"
-                  class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center group"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:rotate-180 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
-                    <path d="M21 3v5h-5"></path>
-                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
-                    <path d="M3 21v-5h5"></path>
-                  </svg>
-                  Reset Form
-                </button>
-              </div>
-            </form>
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block text-gray-700 mb-1">Username</label>
+            <input
+              type="text"
+              id="loginUsername"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              required
+            />
           </div>
-        </div>
-
-        <!-- Bill Report Table -->
-        <div id="tableReport" class="mt-12 hidden">
-          <div class="text-center mb-8">
-            <h3 class="text-2xl font-bold text-secondary mb-2">Bill Report</h3>
-            <p class="text-gray-600">Generated water bill details for the tenant</p>
+          <div>
+            <label class="block text-gray-700 mb-1">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              required
+            />
           </div>
-          
-          <div class="table-container">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead class="table-header">
-                  <tr>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Tenant Name</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Prev Reading</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Current Reading</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Units</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Unit Cost (shs. 3516)</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Rubbish (shs. 5000)</th>
-                    <th class="px-6 py-4 text-left text-sm font-semibold">Total Bill</th>
-                  </tr>
-                </thead>
-                <tbody id="billReport" class="text-gray-700">
-                  <!-- Table rows will be dynamically added here -->
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <button
+            type="submit"
+            id="adminLoginBtn"
+            class="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition"
+          >
+            Login
+          </button>
+        </form>
+        <div
+          id="loginError"
+          class="text-red-500 text-sm mt-2 hidden text-center"
+        >
+          Invalid credentials.
         </div>
       </div>
     </div>
-  </main>
 
-  <!-- Footer -->
-  <footer class="bg-secondary text-white py-8 mt-20 relative overflow-hidden">
-    <div class="absolute inset-0 bg-hero-pattern opacity-5"></div>
-    <div class="container mx-auto px-4 md:px-8 relative z-10">
-      <div class="text-center">
-        <div class="flex items-center justify-center space-x-2 mb-4">
-          <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-            </svg>
-          </div>
-          <span class="text-xl font-bold">GETA</span>
-        </div>
-        <p class="text-gray-300 mb-4">Professional Water Bill Management System</p>
-        <!-- Social Media Links -->
-            <div class="flex flex-wrap justify-center gap-4">
-              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#1877F2] group-hover:text-[#0d6efd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                </svg>
-              </a>
-              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#1DA1F2] group-hover:text-[#0c85d0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                </svg>
-              </a>
-              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#0A66C2] group-hover:text-[#084e96]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                  <rect width="4" height="12" x="2" y="9"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-              </a>
-              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#E4405F] group-hover:text-[#d62e50]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                </svg>
-              </a>
-              <a href="#" class="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-in">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#FF0000] group-hover:text-[#cc0000]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-                </svg>
-              </a>
-            </div>
-        <div class="border-t border-gray-700 mt-6 pt-6">
-          <p class="text-gray-400 text-sm">
-            © 2025 GETA Water Bill Management System. All Rights Reserved.
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var loginBtn = document.getElementById("loginBtn");
+        var loginModal = document.getElementById("loginModal");
+        var closeModal = document.getElementById("closeModal");
+        var loginForm = document.getElementById("loginForm");
+        var loginError = document.getElementById("loginError");
+        var dashboardLink = document.getElementById("dashboardLink");
+        var authNav = document.getElementById("authNav");
 
-  <!-- jQuery & Script -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="main.js"></script>
-
-  <!-- Login Modal -->
-  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm relative">
-      <button id="closeModal" class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl">&times;</button>
-      <h2 class="text-2xl font-bold text-secondary mb-6 text-center">Manager Login</h2>
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="block text-gray-700 mb-1">Username</label>
-          <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required />
-        </div>
-        <div>
-          <label class="block text-gray-700 mb-1">Password</label>
-          <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" required />
-        </div>
-        <button type="submit" id="adminLoginBtn" class="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition">Login</button>
-      </form>
-      <div id="loginError" class="text-red-500 text-sm mt-2 hidden text-center">Invalid credentials.</div>
-    </div>
-  </div>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var loginBtn = document.getElementById('loginBtn');
-    var loginModal = document.getElementById('loginModal');
-    var closeModal = document.getElementById('closeModal');
-    var loginForm = document.getElementById('loginForm');
-    var loginError = document.getElementById('loginError');
-    var dashboardLink = document.getElementById('dashboardLink');
-    var authNav = document.getElementById('authNav');
-
-    // Show modal
-    if (loginBtn) {
-      loginBtn.addEventListener('click', function() {
-        loginModal.classList.remove('hidden');
-        loginError.classList.add('hidden');
-      });
-    }
-    // Hide modal
-    if (closeModal) {
-      closeModal.addEventListener('click', function() {
-        loginModal.classList.add('hidden');
-      });
-    }
-    // Hide modal on outside click
-    if (loginModal) {
-      loginModal.addEventListener('click', function(e) {
-        if (e.target === loginModal) loginModal.classList.add('hidden');
-      });
-    }
-    // Demo login logic
-    if (loginForm) {
-      loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        var username = document.getElementById('loginUsername').value.trim();
-        var password = document.getElementById('loginPassword').value.trim();
-        if (username && password) {
-          // Simulate login success
-          localStorage.setItem('geta_manager_logged_in', '1');
-          localStorage.setItem('managerUsername', username);
-          loginModal.classList.add('hidden');
-          if (loginBtn) loginBtn.classList.add('hidden');
-          if (dashboardLink) dashboardLink.classList.remove('hidden');
-          window.location.href = 'dashboard.html';
-        } else {
-          loginError.classList.remove('hidden');
+        // Show modal
+        if (loginBtn) {
+          loginBtn.addEventListener("click", function () {
+            loginModal.classList.remove("hidden");
+            loginError.classList.add("hidden");
+          });
+        }
+        // Hide modal
+        if (closeModal) {
+          closeModal.addEventListener("click", function () {
+            loginModal.classList.add("hidden");
+          });
+        }
+        // Hide modal on outside click
+        if (loginModal) {
+          loginModal.addEventListener("click", function (e) {
+            if (e.target === loginModal) loginModal.classList.add("hidden");
+          });
+        }
+        // Demo login logic
+        if (loginForm) {
+          loginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            var username = document
+              .getElementById("loginUsername")
+              .value.trim();
+            var password = document
+              .getElementById("loginPassword")
+              .value.trim();
+            if (username && password) {
+              // Simulate login success
+              localStorage.setItem("geta_manager_logged_in", "1");
+              localStorage.setItem("managerUsername", username);
+              loginModal.classList.add("hidden");
+              if (loginBtn) loginBtn.classList.add("hidden");
+              if (dashboardLink) dashboardLink.classList.remove("hidden");
+              window.location.href = "dashboard.html";
+            } else {
+              loginError.classList.remove("hidden");
+            }
+          });
+        }
+        // On page load, show dashboard link if logged in
+        if (loginBtn && dashboardLink) {
+          if (localStorage.getItem("geta_manager_logged_in") === "1") {
+            loginBtn.classList.add("hidden");
+            dashboardLink.classList.remove("hidden");
+          } else {
+            loginBtn.classList.remove("hidden");
+            dashboardLink.classList.add("hidden");
+          }
         }
       });
-    }
-    // On page load, show dashboard link if logged in
-    if (loginBtn && dashboardLink) {
-      if (localStorage.getItem('geta_manager_logged_in') === '1') {
-        loginBtn.classList.add('hidden');
-        dashboardLink.classList.remove('hidden');
-      } else {
-        loginBtn.classList.remove('hidden');
-        dashboardLink.classList.add('hidden');
-      }
-    }
-  });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
