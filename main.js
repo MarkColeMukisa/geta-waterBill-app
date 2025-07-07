@@ -344,15 +344,6 @@ $(document).ready(function () {
     );
   }, 1000);
 
-  // Admin Username
-  $("#adminLoginButton").click(function () {
-    let loginUsername = $("#loginUsername").val();
-
-    //save username to localStorage
-    localStorage.setItem("manageUsername", loginUsername);
-
-    //redirect to ds
-  });
 
   const loginBtn = $("#loginBtn");
   const loginModal = $("#loginModal");
@@ -385,23 +376,31 @@ $(document).ready(function () {
   });
 
   // Submit login
-  loginForm.on("submit", function (e) {
-    e.preventDefault();
+loginForm.on("submit", function (e) {
+  e.preventDefault();
 
-    const username = $("#loginUsername").val().trim();
-    const password = $("#loginPassword").val().trim();
+  const username = $("#loginUsername").val().trim();
+  const password = $("#loginPassword").val().trim();
 
-    if (username && password) {
-      localStorage.setItem("manageUsername", username);
-      updateLoginButton(username);
-      loginModal.addClass("hidden");
-      loginForm[0].reset();
-      loginError.addClass("hidden");
-      showLogoutOption(true);
-    } else {
-      loginError.removeClass("hidden");
-    }
-  });
+  if (username && password) {
+    // Store login session info
+    localStorage.setItem("managerUsername", username);
+    localStorage.setItem("geta_manager_logged_in", "1");
+
+    // Update login UI
+    updateLoginButton(username);
+    loginModal.addClass("hidden");
+    loginForm[0].reset();
+    loginError.addClass("hidden");
+    showLogoutOption(true);
+
+    // Optional: Redirect to dashboard (if login is only for access)
+    window.location.href = "dashboard.html";
+  } else {
+    loginError.removeClass("hidden");
+  }
+});
+
 
   // Close modal
   closeModalBtn.on("click", function () {
@@ -447,4 +446,9 @@ $(document).ready(function () {
       logoutOption.addClass("hidden");
     }
   }
+
+  $('#logoutBtn').click( function(){
+    window.location.href = 'index.html';
+  });
+
 });

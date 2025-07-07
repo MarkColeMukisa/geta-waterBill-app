@@ -43,27 +43,7 @@
     </div>
   </main>
 
-  <!-- jQuery & Script -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script>
-    $(function() {
-      // Redirect to login if not authenticated
-      if (localStorage.getItem('geta_manager_logged_in') !== '1') {
-        window.location.href = 'index.html';
-        return;
-      }
-      // Set username in welcome message
-      const username = localStorage.getItem('managerUsername');
-      const displayName = username ? username : 'Manager';
-      $('.dashboard-welcome').html(`Welcome, ${displayName}!`);
-      // Logout logic
-      $('#logoutBtn').on('click', function() {
-        localStorage.removeItem('geta_manager_logged_in');
-        localStorage.removeItem('managerUsername');
-        window.location.href = 'index.html';
-      });
-    });
-  </script>
   <script src="main.js"></script>
 </body>
 </html> 
