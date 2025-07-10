@@ -344,111 +344,47 @@ $(document).ready(function () {
     );
   }, 1000);
 
+  // --- LOGIN MODAL LOGIC (migrated and fixed, using jQuery) ---
+  // Ensure unique IDs for login buttons in HTML: #loginBtn (desktop), #loginBtnMobile (mobile)
+  var $loginBtn = $('#loginBtn');
+  var $loginBtnMobile = $('#loginBtnMobile');
+  var $loginModal = $('#loginModal');
+  var $closeModal = $('#closeModal');
+  var $loginError = $('#loginError');
 
-  const loginBtn = $("#loginBtn");
-  const loginModal = $("#loginModal");
-  const loginForm = $("#loginForm");
-  const loginError = $("#loginError");
-  const closeModalBtn = $("#closeModal");
-  const logoutBtn = $("#logoutBtn");
-  const logoutOption = $("#logoutOption");
+  // Show modal on desktop login button
+  $loginBtn.on('click', function () {
+    $loginModal.removeClass('hidden');
+    $loginError.addClass('hidden');
+  });
+  // Show modal on mobile login button
+  $loginBtnMobile.on('click', function () {
+    $loginModal.removeClass('hidden');
+    $loginError.addClass('hidden');
+  });
+  // Hide modal
+  $closeModal.on('click', function () {
+    $loginModal.addClass('hidden');
+  });
 
-  // On load — if user is logged in
-  const storedUsername = localStorage.getItem("manageUsername");
-  if (storedUsername) {
-    updateLoginButton(storedUsername);
-    showLogoutOption(true);
-  } else {
-    showLogoutOption(false);
-  }
-
-  // Click login button
-  loginBtn.on("click", function (e) {
-    const isLoggedIn = !!localStorage.getItem("manageUsername");
-
-    if (!isLoggedIn) {
-      e.preventDefault();
-      loginModal.removeClass("hidden");
-    } else {
-      // Toggle logout option
-      logoutOption.toggleClass("hidden");
+  // Login form handler
+  $('#adminLoginBtn').click(function(e){
+    e.preventDefault();
+    var username = $('#loginUsername').val();
+    var password = $('#loginPassword').val();
+    if(username === "admin" && password === "password"){
+      window.location.href = "dashboard.html";
+    }else{
+      $loginError.removeClass('hidden');
     }
   });
-
-  // Submit login
-loginForm.on("submit", function (e) {
-  e.preventDefault();
-
-  const username = $("#loginUsername").val().trim();
-  const password = $("#loginPassword").val().trim();
-
-  if (username && password) {
-    // Store login session info
-    localStorage.setItem("managerUsername", username);
-    localStorage.setItem("geta_manager_logged_in", "1");
-
-    // Update login UI
-    updateLoginButton(username);
-    loginModal.addClass("hidden");
-    loginForm[0].reset();
-    loginError.addClass("hidden");
-    showLogoutOption(true);
-
-    // Optional: Redirect to dashboard (if login is only for access)
-    window.location.href = "dashboard.html";
-  } else {
-    loginError.removeClass("hidden");
-  }
-});
-
-
-  // Close modal
-  closeModalBtn.on("click", function () {
-    loginModal.addClass("hidden");
-  });
-
-  // Logout handler
-  logoutBtn.on("click", function () {
-    localStorage.removeItem("manageUsername");
-
-    resetLoginButton();
-    showLogoutOption(false);
-    loginModal.addClass("hidden");
-  });
-
-  // Replace only text in button (preserve SVG)
-  function updateLoginButton(username) {
-    loginBtn
-      .contents()
-      .filter(function () {
-        return this.nodeType === 3; // text node only
-      })
-      .first()
-      .replaceWith(`Welcome, ${username} `);
-  }
-
-  // Reset to original "Login"
-  function resetLoginButton() {
-    loginBtn
-      .contents()
-      .filter(function () {
-        return this.nodeType === 3;
-      })
-      .first()
-      .replaceWith(`Login `);
-  }
-
-  // Show or hide logout button
-  function showLogoutOption(show) {
-    if (show) {
-      logoutOption.removeClass("hidden");
-    } else {
-      logoutOption.addClass("hidden");
-    }
-  }
 
   $('#logoutBtn').click( function(){
     window.location.href = 'index.html';
   });
 
+  // Mobile menu toggle
+  $('#mobile-menu-button').click(function () {
+    $('#mobile-menu').toggleClass('hidden');
+  });
 });
