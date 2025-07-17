@@ -139,10 +139,17 @@ $(document).ready(function () {
   });
 
   // Enhanced bill generation function
+  // Store all bills for grand total and month tracking
+  let allBills = [];
+
   function generateBill() {
     const tenantName = $("#tenantName").val().trim();
     const pmReading = parseFloat($("#pmReading").val());
     const cmReading = parseFloat($("#cmReading").val());
+    let billMonth = $('#billMonth').val();
+    if (!billMonth) {
+      billMonth = new Date().toLocaleString('default', { month: 'long' });
+    }
 
     const units = cmReading - pmReading;
     const unitCost = units * 3516;
@@ -151,35 +158,81 @@ $(document).ready(function () {
     const rubbishExpense = 5000;
     const totalBill = Math.round(unitCost + vat + paye + rubbishExpense);
 
+    // Store bill in array
+    allBills.push({ tenantName, pmReading, cmReading, units, unitCost, rubbishExpense, totalBill, billMonth });
+
     // Create enhanced table row with animations
     const newRow = $(`
-            <tr class="table-row border-b border-gray-200 hover:bg-gray-50 transition-all duration-300">
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                        </div>
-                        ${tenantName}
-                    </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${pmReading.toLocaleString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${cmReading.toLocaleString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${units.toLocaleString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${unitCost.toLocaleString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${rubbishExpense.toLocaleString()}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-primary">${totalBill.toLocaleString()}</td>
-            </tr>
-        `);
+      <tr class="table-row border-b border-gray-200 hover:bg-gray-50 transition-all duration-300">
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+          <div class="flex items-center">
+            <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            ${tenantName}
+          </div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${pmReading.toLocaleString()}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${cmReading.toLocaleString()}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${units.toLocaleString()}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${unitCost.toLocaleString()}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${rubbishExpense.toLocaleString()}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-primary">${totalBill.toLocaleString()}</td>
+      </tr>
+    `);
 
     // Add row with animation
     $("#billReport").append(newRow);
     newRow.hide().fadeIn(500);
 
-    // Show table with animation
-    $("#tableReport").slideDown(600);
+    // --- MOBILE CARD LOGIC ---
+    // Hide table on mobile, show card only
+    if (window.innerWidth < 768) {
+      $("#tableReport").hide();
+      // Create a new card for this bill
+      const cardId = `mobileCard_${Date.now()}`;
+      const newCard = $(`
+        <div class="course-card bg-white rounded-2xl overflow-hidden shadow-xl glow-on-hover relative" id="${cardId}">
+          <div class="absolute top-0 right-0 duration-badge bg-red-500 text-white px-2 py-1 md:px-3 md:py-1 rounded-bl-lg font-medium text-xs">
+            <span>${billMonth}</span>
+          </div>
+          <div class="p-4 md:p-6">
+            <h3 class="text-lg md:text-xl font-bold text-secondary mb-3 md:mb-4">
+              ${tenantName}
+            </h3>
+            <div class="flex justify-between items-center">
+              <div class="price-tag bg-primary/10 text-primary font-bold py-1 px-3 md:py-2 md:px-4 text-sm md:text-base">
+                UGX ${totalBill.toLocaleString()}
+              </div>
+              <svg class="w-6 h-6 text-gray-800 dark:text-white hover:text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 21">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9.046 3.59-.435-2.324m.435 2.324a5.338 5.338 0 0 1 6.033 4.333l.331 1.77c.439 2.344 2.383 2.587 2.599 3.76.11.586.22 1.171-.309 1.271L5 17.101c-.529.1-.639-.488-.749-1.074-.219-1.172 1.506-2.102 1.067-4.447l-.331-1.769a5.338 5.338 0 0 1 4.059-6.22Zm-7.13 4.602a8.472 8.472 0 0 1 2.17-5.048m2.646 13.633A3.472 3.472 0 0 0 13.46 16l.089-.5-6.817 1.277Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      `);
+      // Add the new card to the container
+      $('#mobileCardsContainer').append(newCard);
+      newCard.hide().fadeIn(500);
+      $('#mobileCard').removeClass('hidden');
+      // Update grand total card for mobile
+      const grandTotal = allBills.reduce((sum, b) => sum + b.totalBill, 0);
+      $('#grandTotalMobile').text(`UGX ${grandTotal.toLocaleString()}`);
+      $('#grandTotalCard').removeClass('hidden');
+    } else {
+      // Show table on desktop
+      $("#tableReport").slideDown(600);
+      // Update grand total row for desktop
+      const grandTotal = allBills.reduce((sum, b) => sum + b.totalBill, 0);
+      $('#grandTotalCell').text(`UGX ${grandTotal}`);
+    }
+
+    // Always update grand total row for desktop
+    const grandTotal = allBills.reduce((sum, b) => sum + b.totalBill, 0);
+    $('#grandTotalCell').text(`UGX ${grandTotal}`);
 
     // Show success notification
     showNotification(
@@ -193,13 +246,14 @@ $(document).ready(function () {
       $("#formDetails").removeClass("animate-pulse");
     }, 1000);
 
-    // Scroll to table
-    $("html, body").animate(
-      {
-        scrollTop: $("#tableReport").offset().top - 100,
-      },
-      800
-    );
+    // Scroll to report section
+    setTimeout(() => {
+      if (window.innerWidth < 768) {
+        document.getElementById('mobileCard').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        document.getElementById('tableReport').scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 500);
   }
 
   // Enhanced reset functionality
@@ -388,3 +442,5 @@ $(document).ready(function () {
     $('#mobile-menu').toggleClass('hidden');
   });
 });
+
+
